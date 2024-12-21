@@ -11,14 +11,13 @@
 #include "..\Common\Common.h"
 
 #include "..\Classes\MessageClass.h"
+#include "..\Classes\WindowClass.h"
 #include "..\Classes\WindowClassClass.h"
 
 #define MAIN_WINDOW_CLASS_NAME													"Main Template Window Class"
 
 #define MAIN_WINDOW_CLASS_MENU_NAME												MAKEINTRESOURCE( IDR_MAIN_MENU )
 
-#define MAIN_WINDOW_EXTENDED_STYLE												( WS_EX_WINDOWEDGE | WS_EX_ACCEPTFILES )
-#define MAIN_WINDOW_STYLE														WS_OVERLAPPEDWINDOW
 #define MAIN_WINDOW_TEXT														"Template"
 
 #define MAIN_WINDOW_MINIMUM_WIDTH												320
@@ -41,5 +40,3 @@
 																				"Written by Jim Smith\r\n"			\
 																				"\r\n"								\
 																				"December 2024"
-
-#define UNABLE_TO_CREATE_MAIN_WINDOW_ERROR_MESSAGE								"Unable to Create Main Window"

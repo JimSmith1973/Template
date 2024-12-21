@@ -433,13 +433,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 	if( mainWindowClass.Register() )
 	{
 		// Successfully registered main window class
-		HWND hWndMain;
+		Window mainWindow;
 
 		// Create main window
-		hWndMain = CreateWindowEx( MAIN_WINDOW_EXTENDED_STYLE, MAIN_WINDOW_CLASS_NAME, MAIN_WINDOW_TEXT, MAIN_WINDOW_STYLE, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL );
-
-		// Ensure that main window was created
-		if( hWndMain )
+		if( mainWindow.Create( MAIN_WINDOW_CLASS_NAME, NULL, hInstance, MAIN_WINDOW_TEXT ) )
 		{
 			// Successfully created main window
 			HMENU hMenuSystem;
@@ -447,7 +444,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 			int nArgumentCount;
 
 			// Get system menu
-			hMenuSystem = GetSystemMenu( hWndMain, FALSE );
+			hMenuSystem = mainWindow.GetSystemMenu();
 
 			// Add separator item to system menu
 			InsertMenu( hMenuSystem, SYSTEM_MENU_SEPARATOR_ITEM_POSITION, ( MF_BYPOSITION | MF_SEPARATOR ), 0, NULL );
@@ -495,10 +492,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 			} // End of successfully got argument list
 
 			// Show window
-			ShowWindow( hWndMain, nCmdShow );
+			mainWindow.Show( nCmdShow );
 
 			// Update window
-			UpdateWindow( hWndMain );
+			mainWindow.Update();
 
 			// Message loop
 			while( message.Get() > 0 )
@@ -517,7 +514,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 			// Unable to create main window
 
 			// Display error message
-			MessageBox( NULL, UNABLE_TO_CREATE_MAIN_WINDOW_ERROR_MESSAGE, ERROR_MESSAGE_CAPTION, ( MB_OK | MB_ICONERROR ) );
+			MessageBox( NULL, WINDOW_CLASS_UNABLE_TO_CREATE_WINDOW_ERROR_MESSAGE, ERROR_MESSAGE_CAPTION, ( MB_OK | MB_ICONERROR ) );
 
 		} // End of unable to create main window
 
