@@ -424,25 +424,13 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 {
 	Message message;
 
-	WNDCLASSEX wcMain;
+	WindowClass mainWindowClass;
 
-	// Clear main window class structure
-	ZeroMemory( &wcMain, sizeof( wcMain ) );
-
-	// Initialise main window class structure
-	wcMain.cbSize			= sizeof( WNDCLASSEX );
-	wcMain.lpfnWndProc		= MainWindowProcedure;
-	wcMain.hInstance		= hInstance;
-	wcMain.lpszClassName	= MAIN_WINDOW_CLASS_NAME;
-	wcMain.style			= MAIN_WINDOW_CLASS_STYLE;
-	wcMain.hIcon			= MAIN_WINDOW_CLASS_ICON;
-	wcMain.hCursor			= MAIN_WINDOW_CLASS_CURSOR;
-	wcMain.hbrBackground	= MAIN_WINDOW_CLASS_BACKGROUND;
-	wcMain.lpszMenuName		= MAIN_WINDOW_CLASS_MENU_NAME;
-	wcMain.hIconSm			= MAIN_WINDOW_CLASS_ICON;
+	// Initialise main window class
+	mainWindowClass.Initialise( MAIN_WINDOW_CLASS_NAME, hInstance, MainWindowProcedure );
 
 	// Register main window class
-	if( RegisterClassEx( &wcMain ) )
+	if( mainWindowClass.Register() )
 	{
 		// Successfully registered main window class
 		HWND hWndMain;
@@ -539,7 +527,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 		// Unable to register main window class
 
 		// Display error message
-		MessageBox( NULL, UNABLE_TO_REGISTER_MAIN_WINDOW_CLASS_ERROR_MESSAGE, ERROR_MESSAGE_CAPTION, ( MB_OK | MB_ICONERROR ) );
+		MessageBox( NULL, WINDOW_CLASS_CLASS_UNABLE_TO_REGISTER_ERROR_MESSAGE, ERROR_MESSAGE_CAPTION, ( MB_OK | MB_ICONERROR ) );
 
 	} // End of unable to register main window class
 

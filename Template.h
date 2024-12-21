@@ -11,6 +11,7 @@
 #include "..\Common\Common.h"
 
 #include "..\Classes\MessageClass.h"
+#include "..\Classes\WindowClassClass.h"
 
 #define MAIN_WINDOW_CLASS_NAME													"Main Template Window Class"
 
@@ -46,5 +47,4 @@
 																				"\r\n"								\
 																				"December 2024"
 
-#define UNABLE_TO_REGISTER_MAIN_WINDOW_CLASS_ERROR_MESSAGE						"Unable to Register Main Window Class"
 #define UNABLE_TO_CREATE_MAIN_WINDOW_ERROR_MESSAGE								"Unable to Create Main Window"
