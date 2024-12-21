@@ -368,13 +368,13 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 		case WM_CONTEXTMENU:
 		{
 			// A context menu message
-			HMENU hMenu;
+			Menu popupMenu;
 
-			// Load context menu
-			hMenu = LoadMenu( NULL, MAKEINTRESOURCE( IDR_CONTEXT_MENU ) );
+			// Load popup menu
+			popupMenu.Load( MAKEINTRESOURCE( IDR_CONTEXT_MENU ) );
 
-			// Show context menu
-			TrackPopupMenu( GetSubMenu( hMenu, 0 ), ( TPM_LEFTALIGN | TPM_LEFTBUTTON ), LOWORD( lParam ), HIWORD( lParam ), 0, hWndMain, NULL );
+			// Show popup menu
+			popupMenu.TrackPopupMenu( 0, lParam, hWndMain );
 
 			// Break out of switch
 			break;
@@ -439,18 +439,18 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 		if( mainWindow.Create( MAIN_WINDOW_CLASS_NAME, NULL, hInstance, MAIN_WINDOW_TEXT ) )
 		{
 			// Successfully created main window
-			HMENU hMenuSystem;
+			Menu systemMenu;
 			LPWSTR *lpszArgumentList;
 			int nArgumentCount;
 
 			// Get system menu
-			hMenuSystem = mainWindow.GetSystemMenu();
+			systemMenu.GetSystem( mainWindow );
 
 			// Add separator item to system menu
-			InsertMenu( hMenuSystem, SYSTEM_MENU_SEPARATOR_ITEM_POSITION, ( MF_BYPOSITION | MF_SEPARATOR ), 0, NULL );
+			systemMenu.InsertSeparator( SYSTEM_MENU_SEPARATOR_ITEM_POSITION );
 
 			// Add about item to system menu
-			InsertMenu( hMenuSystem, SYSTEM_MENU_ABOUT_ITEM_POSITION, MF_BYPOSITION, IDM_HELP_ABOUT, SYSTEM_MENU_ABOUT_ITEM_TEXT );
+			systemMenu.InsertItem( SYSTEM_MENU_ABOUT_ITEM_POSITION, IDM_HELP_ABOUT, SYSTEM_MENU_ABOUT_ITEM_TEXT );
 
 			// Get argument list
 			lpszArgumentList = CommandLineToArgvW( GetCommandLineW(), &nArgumentCount );
@@ -491,10 +491,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 
 			} // End of successfully got argument list
 
-			// Show window
+			// Show main window
 			mainWindow.Show( nCmdShow );
 
-			// Update window
+			// Update main window
 			mainWindow.Update();
 
 			// Message loop

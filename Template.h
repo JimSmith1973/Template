@@ -11,6 +11,7 @@
 #include "..\Common\Common.h"
 
 #include "..\Classes\MessageClass.h"
+#include "..\Classes\MenuClass.h"
 #include "..\Classes\WindowClass.h"
 #include "..\Classes\WindowClassClass.h"
 
