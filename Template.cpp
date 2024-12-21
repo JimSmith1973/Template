@@ -22,7 +22,7 @@ int ShowAboutMessage( HWND hWndParent )
 	mbp.lpszText	= ABOUT_MESSAGE_TEXT;
 	mbp.lpszCaption	= ABOUT_MESSAGE_CAPTION;
 	mbp.dwStyle		= ( MB_OK | MB_USERICON );
-	mbp.lpszIcon	= MAIN_WINDOW_CLASS_ICON_NAME;
+	mbp.lpszIcon	= WINDOW_CLASS_CLASS_DEFAULT_ICON_NAME;
 
 	// Show message box
 	nResult = MessageBoxIndirect( &mbp );
@@ -427,7 +427,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 	WindowClass mainWindowClass;
 
 	// Initialise main window class
-	mainWindowClass.Initialise( MAIN_WINDOW_CLASS_NAME, hInstance, MainWindowProcedure );
+	mainWindowClass.Initialise( MAIN_WINDOW_CLASS_NAME, hInstance, MainWindowProcedure, MAIN_WINDOW_CLASS_MENU_NAME );
 
 	// Register main window class
 	if( mainWindowClass.Register() )
