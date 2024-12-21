@@ -10,6 +10,8 @@
 #include "..\Common\Ascii.h"
 #include "..\Common\Common.h"
 
+#include "..\Classes\MessageClass.h"
+
 #define MAIN_WINDOW_CLASS_NAME													"Main Template Window Class"
 
 #define MAIN_WINDOW_CLASS_STYLE													0
