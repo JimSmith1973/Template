@@ -6,12 +6,12 @@
 HWND g_hWndListBox;
 HWND g_hWndStatusBar;
 
-void ArgumentFunction( LPCTSTR lpszArgument )
+void OpenFileFunction( LPCTSTR lpszArgument )
 {
 	// Display argument
 	MessageBox( NULL, lpszArgument, INFORMATION_MESSAGE_CAPTION, ( MB_OK | MB_ICONINFORMATION ) );
 
-} // End of function ArgumentFunction
+} // End of function OpenFileFunction
 
 int ShowAboutMessage( HWND hWndParent )
 {
@@ -147,47 +147,17 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 		case WM_DROPFILES:
 		{
 			// A drop files message
-			UINT uFileCount;
-			HDROP hDrop;
-			UINT uWhichFile;
-			UINT uFileSize;
+			DroppedFiles droppedFiles;
 
-			// Allocate string memory
-			LPTSTR lpszFilePath = new char[ STRING_LENGTH ];
-
-			// Get drop handle
-			hDrop = ( HDROP )wParam;
-
-			// Count dropped files
-			uFileCount = DragQueryFile( hDrop, ( UINT )-1, NULL, 0 );
-
-			// Loop through dropped files
-			for( uWhichFile = 0; uWhichFile < uFileCount; uWhichFile ++ )
+			// Get dropped files
+			if( droppedFiles.Get( wParam ) )
 			{
-				// Get size of dropped file
-				uFileSize = DragQueryFile( hDrop, uWhichFile, NULL, 0 );
+				// Successfully got dropped files
 
-				// Ensure that file size is valid
-				if( uFileSize != 0 )
-				{
-					// File size is valid
+				// Process dropped files
+				droppedFiles.Process( &OpenFileFunction );
 
-					// Get file path
-					if( DragQueryFile( hDrop, uWhichFile, lpszFilePath, ( uFileSize + sizeof( char ) ) ) )
-					{
-						// Successfully got file path
-
-						// Add file path to list box window
-						SendMessage( g_hWndListBox, LB_ADDSTRING, ( WPARAM )NULL, ( LPARAM )lpszFilePath );
-
-					} // End of successfully got file path
-
-				} // End of file size is valid
-
-			}; // End of loop through dropped files
-
-			// Free string memory
-			delete [] lpszFilePath;
+			} // End of successfully got dropped files
 
 			// Break out of switch
 			break;
@@ -464,7 +434,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 				// Successfully got argument list
 
 				// Process arguments
-				argumentList.ProcessArguments( &ArgumentFunction );
+				argumentList.ProcessArguments( &OpenFileFunction );
 
 			} // End of successfully got argument list
 
