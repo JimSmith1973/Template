@@ -6,6 +6,13 @@
 HWND g_hWndListBox;
 HWND g_hWndStatusBar;
 
+void ArgumentFunction( LPCTSTR lpszArgument )
+{
+	// Display argument
+	MessageBox( NULL, lpszArgument, INFORMATION_MESSAGE_CAPTION, ( MB_OK | MB_ICONINFORMATION ) );
+
+} // End of function ArgumentFunction
+
 int ShowAboutMessage( HWND hWndParent )
 {
 	int nResult = 0;
@@ -440,8 +447,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 		{
 			// Successfully created main window
 			Menu systemMenu;
-			LPWSTR *lpszArgumentList;
-			int nArgumentCount;
+			ArgumentList argumentList;
 
 			// Get system menu
 			systemMenu.GetSystem( mainWindow );
@@ -453,41 +459,12 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 			systemMenu.InsertItem( SYSTEM_MENU_ABOUT_ITEM_POSITION, IDM_HELP_ABOUT, SYSTEM_MENU_ABOUT_ITEM_TEXT );
 
 			// Get argument list
-			lpszArgumentList = CommandLineToArgvW( GetCommandLineW(), &nArgumentCount );
-
-			// Ensure that argument list was got
-			if( lpszArgumentList )
+			if( argumentList.Get() )
 			{
 				// Successfully got argument list
-				int nWhichArgument;
-				int nSizeNeeded;
-				int nWideArgumentLength;
 
-				// Allocate string memory
-				LPTSTR lpszArgument = new char[ STRING_LENGTH ];
-
-				// Loop through arguments
-				for( nWhichArgument = 1; nWhichArgument < nArgumentCount; nWhichArgument ++ )
-				{
-					// Get wide argument length
-					nWideArgumentLength = lstrlenW( lpszArgumentList[ nWhichArgument ] );
-
-					// Get size required for argument
-					nSizeNeeded = WideCharToMultiByte( CP_UTF8, 0, lpszArgumentList[ nWhichArgument ], nWideArgumentLength, NULL, 0, NULL, NULL );
-
-					// Convert argument to ansi
-					WideCharToMultiByte( CP_UTF8, 0, lpszArgumentList[ nWhichArgument ], nWideArgumentLength, lpszArgument, nSizeNeeded, NULL, NULL );
-
-					// Terminate argument
-					lpszArgument[ nSizeNeeded ] = ( char )NULL;
-
-					// Add argument to list box window
-					SendMessage( g_hWndListBox, LB_ADDSTRING, ( WPARAM )NULL, ( LPARAM )lpszArgument );
-
-				}; // End of loop through arguments
-
-				// Free string memory
-				delete [] lpszArgument;
+				// Process arguments
+				argumentList.ProcessArguments( &ArgumentFunction );
 
 			} // End of successfully got argument list
 

@@ -10,6 +10,7 @@
 #include "..\Common\Ascii.h"
 #include "..\Common\Common.h"
 
+#include "..\Classes\ArgumentListClass.h"
 #include "..\Classes\MessageClass.h"
 #include "..\Classes\MenuClass.h"
 #include "..\Classes\WindowClass.h"
