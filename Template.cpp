@@ -6,10 +6,10 @@
 HWND g_hWndListBox;
 HWND g_hWndStatusBar;
 
-void OpenFileFunction( LPCTSTR lpszArgument )
+void OpenFileFunction( LPCTSTR lpszFilePath )
 {
-	// Display argument
-	MessageBox( NULL, lpszArgument, INFORMATION_MESSAGE_CAPTION, ( MB_OK | MB_ICONINFORMATION ) );
+	// Add file to list box window
+	SendMessage( g_hWndListBox, LB_ADDSTRING, ( WPARAM )NULL, ( LPARAM )lpszFilePath );
 
 } // End of function OpenFileFunction
 
@@ -60,13 +60,13 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			if( g_hWndListBox )
 			{
 				// Successfully created list box window
-				HFONT hFont;
+				Font font;
 
 				// Get font
-				hFont = ( HFONT )GetStockObject( DEFAULT_GUI_FONT );
+				font = DEFAULT_GUI_FONT;
 
 				// Set list box window font
-				SendMessage( g_hWndListBox, WM_SETFONT, ( WPARAM )hFont, ( LPARAM )TRUE );
+				SendMessage( g_hWndListBox, WM_SETFONT, ( WPARAM )font, ( LPARAM )TRUE );
 
 				// Create status bar window
 				g_hWndStatusBar = CreateWindowEx( STATUS_BAR_WINDOW_EXTENDED_STYLE, STATUSCLASSNAME, STATUS_BAR_WINDOW_TEXT, STATUS_BAR_WINDOW_STYLE, 0, 0, 0, 0, hWndMain, ( HMENU )NULL, hInstance, NULL );
@@ -77,7 +77,7 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 					// Successfully created status bar window
 
 					// Set status bar window font
-					SendMessage( g_hWndStatusBar, WM_SETFONT, ( WPARAM )hFont, ( LPARAM )TRUE );
+					SendMessage( g_hWndStatusBar, WM_SETFONT, ( WPARAM )font, ( LPARAM )TRUE );
 
 				} // End of successfully created status bar window
 
