@@ -15,6 +15,7 @@
 #include "..\Classes\FontClass.h"
 #include "..\Classes\MessageClass.h"
 #include "..\Classes\MenuClass.h"
+#include "..\Classes\StatusBarWindowClass.h"
 #include "..\Classes\WindowClass.h"
 #include "..\Classes\WindowClassClass.h"
 

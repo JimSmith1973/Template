@@ -4,7 +4,7 @@
 
 // Global variables
 HWND g_hWndListBox;
-HWND g_hWndStatusBar;
+StatusBarWindow g_statusBarWindow;
 
 void OpenFileFunction( LPCTSTR lpszFilePath )
 {
@@ -69,15 +69,12 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 				SendMessage( g_hWndListBox, WM_SETFONT, ( WPARAM )font, ( LPARAM )TRUE );
 
 				// Create status bar window
-				g_hWndStatusBar = CreateWindowEx( STATUS_BAR_WINDOW_EXTENDED_STYLE, STATUSCLASSNAME, STATUS_BAR_WINDOW_TEXT, STATUS_BAR_WINDOW_STYLE, 0, 0, 0, 0, hWndMain, ( HMENU )NULL, hInstance, NULL );
-
-				// Ensure that status bar window was created
-				if( g_hWndStatusBar )
+				if( g_statusBarWindow.Create( hWndMain, hInstance ) )
 				{
 					// Successfully created status bar window
 
 					// Set status bar window font
-					SendMessage( g_hWndStatusBar, WM_SETFONT, ( WPARAM )font, ( LPARAM )TRUE );
+					g_statusBarWindow.SetFont( font );
 
 				} // End of successfully created status bar window
 
@@ -101,10 +98,10 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			nClientHeight	= ( int )HIWORD( lParam );
 
 			// Size status bar window
-			SendMessage( g_hWndStatusBar, WM_SIZE, ( WPARAM )NULL, ( LPARAM )NULL );
+			g_statusBarWindow.Size();
 
 			// Get status window size
-			GetWindowRect( g_hWndStatusBar, &rcStatus );
+			g_statusBarWindow.GetWindowRect( &rcStatus );
 
 			// Calculate window sizes
 			nStatusWindowHeight		= ( rcStatus.bottom - rcStatus.top );
@@ -249,7 +246,7 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 									// Successfully got selected item text
 
 									// Show selected item text on status bar window
-									SendMessage( g_hWndStatusBar, SB_SETTEXT, ( WPARAM )NULL, ( LPARAM )lpszSelected );
+									g_statusBarWindow.SetText( lpszSelected );
 
 								} // End of successfully got selected item text
 
