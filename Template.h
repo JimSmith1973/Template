@@ -13,6 +13,7 @@
 #include "..\Classes\ArgumentListClass.h"
 #include "..\Classes\DroppedFilesClass.h"
 #include "..\Classes\FontClass.h"
+#include "..\Classes\ListBoxWindowClass.h"
 #include "..\Classes\MessageClass.h"
 #include "..\Classes\MenuClass.h"
 #include "..\Classes\StatusBarWindowClass.h"
@@ -27,10 +28,6 @@
 
 #define MAIN_WINDOW_MINIMUM_WIDTH												320
 #define MAIN_WINDOW_MINIMUM_HEIGHT												200
-
-#define LIST_BOX_WINDOW_EXTENDED_STYLE											0
-#define LIST_BOX_WINDOW_STYLE													( WS_CHILD | WS_VISIBLE | WS_BORDER | WS_HSCROLL | WS_VSCROLL | LBS_NOINTEGRALHEIGHT | LBS_NOTIFY )
-#define LIST_BOX_WINDOW_TEXT													NULL
 
 #define SYSTEM_MENU_SEPARATOR_ITEM_POSITION										5
 #define SYSTEM_MENU_ABOUT_ITEM_POSITION											6

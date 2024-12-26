@@ -3,13 +3,27 @@
 #include "Template.h"
 
 // Global variables
-HWND g_hWndListBox;
+ListBoxWindow g_listBoxWindow;
 StatusBarWindow g_statusBarWindow;
+
+void ListBoxWindowSelectionChangedFunction( LPTSTR lpszItemText )
+{
+	// Show item text on status bat window
+	g_statusBarWindow.SetText( lpszItemText );
+
+} // End of function ListBoxWindowSelectionChangedFunction
+
+void ListBoxWindowDoubleClickFunction( LPTSTR lpszItemText )
+{
+	// Display item text
+	MessageBox( NULL, lpszItemText, INFORMATION_MESSAGE_CAPTION, ( MB_OK | MB_ICONINFORMATION ) );
+
+} // End of function ListBoxWindowDoubleClickFunction
 
 void OpenFileFunction( LPCTSTR lpszFilePath )
 {
 	// Add file to list box window
-	SendMessage( g_hWndListBox, LB_ADDSTRING, ( WPARAM )NULL, ( LPARAM )lpszFilePath );
+	g_listBoxWindow.AddText( lpszFilePath );
 
 } // End of function OpenFileFunction
 
@@ -54,10 +68,7 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			hInstance = ( ( LPCREATESTRUCT )lParam )->hInstance;
 
 			// Create list box window
-			g_hWndListBox = CreateWindowEx( LIST_BOX_WINDOW_EXTENDED_STYLE, WC_LISTBOX, LIST_BOX_WINDOW_TEXT, LIST_BOX_WINDOW_STYLE, 0, 0, 0, 0, hWndMain, ( HMENU )NULL, hInstance, NULL );
-
-			// Ensure that list box window was created
-			if( g_hWndListBox )
+			if( g_listBoxWindow.Create( hWndMain, hInstance ) )
 			{
 				// Successfully created list box window
 				Font font;
@@ -66,7 +77,7 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 				font = DEFAULT_GUI_FONT;
 
 				// Set list box window font
-				SendMessage( g_hWndListBox, WM_SETFONT, ( WPARAM )font, ( LPARAM )TRUE );
+				g_listBoxWindow.SetFont( font );
 
 				// Create status bar window
 				if( g_statusBarWindow.Create( hWndMain, hInstance ) )
@@ -108,7 +119,7 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			nListBoxWindowHeight	= ( nClientHeight - nStatusWindowHeight );
 
 			// Move list box window
-			MoveWindow( g_hWndListBox, 0, 0, nClientWidth, nListBoxWindowHeight, TRUE );
+			g_listBoxWindow.Move( 0, 0, nClientWidth, nListBoxWindowHeight, TRUE );
 
 			// Break out of switch
 			break;
@@ -119,7 +130,7 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			// An activate message
 
 			// Focus on list box window
-			SetFocus( g_hWndListBox );
+			g_listBoxWindow.SetFocus();
 
 			// Break out of switch
 			break;
@@ -194,82 +205,19 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 					// Default command
 
 					// See if command message is from list box window
-					if( ( HWND )lParam == g_hWndListBox )
+					if( ( HWND )lParam == g_listBoxWindow )
 					{
 						// Command message is from list box window
 
-						// Select list box window notification code
-						switch( HIWORD( wParam ) )
+						// Handle command message from list box window
+						if( !( g_listBoxWindow.HandleCommandMessage( wParam, lParam, ListBoxWindowSelectionChangedFunction, ListBoxWindowDoubleClickFunction ) ) )
 						{
-							case LBN_DBLCLK:
-							{
-								// A list box window double click notification code
-								int nSelectedItem;
+							// Command message was not handled from list box window
 
-								// Allocate string memory
-								LPTSTR lpszSelected = new char[ STRING_LENGTH ];
+							// Call default procedure
+							lr = DefWindowProc( hWndMain, uMessage, wParam, lParam );
 
-								// Get selected item
-								nSelectedItem = SendMessage( g_hWndListBox, LB_GETCURSEL, ( WPARAM )NULL, ( LPARAM )NULL );
-
-								// Get selected item text
-								if( SendMessage( g_hWndListBox, LB_GETTEXT, ( WPARAM )nSelectedItem, ( LPARAM )lpszSelected ) )
-								{
-									// Successfully got selected item text
-
-									// Display selected item text
-									MessageBox( hWndMain, lpszSelected, INFORMATION_MESSAGE_CAPTION, ( MB_OK | MB_ICONINFORMATION ) );
-
-								} // End of successfully got selected item text
-
-								// Free string memory
-								delete [] lpszSelected;
-
-								// Break out of switch
-								break;
-
-							} // End of a list box window double click notification code
-							case LBN_SELCHANGE:
-							{
-								// A list box window selection change notification code
-								int nSelectedItem;
-
-								// Allocate string memory
-								LPTSTR lpszSelected = new char[ STRING_LENGTH ];
-
-								// Get selected item
-								nSelectedItem = SendMessage( g_hWndListBox, LB_GETCURSEL, ( WPARAM )NULL, ( LPARAM )NULL );
-
-								// Get selected item text
-								if( SendMessage( g_hWndListBox, LB_GETTEXT, ( WPARAM )nSelectedItem, ( LPARAM )lpszSelected ) )
-								{
-									// Successfully got selected item text
-
-									// Show selected item text on status bar window
-									g_statusBarWindow.SetText( lpszSelected );
-
-								} // End of successfully got selected item text
-
-								// Free string memory
-								delete [] lpszSelected;
-
-								// Break out of switch
-								break;
-
-							} // End of a list box window selection change notification code
-							default:
-							{
-								// Default list box window notification code
-
-								// Call default procedure
-								lr = DefWindowProc( hWndMain, uMessage, wParam, lParam );
-
-								// Break out of switch
-								break;
-
-							} // End of default list box window notification code
-
-						}; // End of selection for list box window notification code
+						} // End of command message was not handled from list box window
 
 					} // End of command message is from list box window
 					else
