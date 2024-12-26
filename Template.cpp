@@ -145,8 +145,8 @@ LRESULT CALLBACK MainWindowProcedure( HWND hWndMain, UINT uMessage, WPARAM wPara
 			lpMinMaxInfo = ( MINMAXINFO FAR * )lParam;
 
 			// Update min max info structure
-			lpMinMaxInfo->ptMinTrackSize.x = MAIN_WINDOW_MINIMUM_WIDTH;
-			lpMinMaxInfo->ptMinTrackSize.y = MAIN_WINDOW_MINIMUM_HEIGHT;
+			lpMinMaxInfo->ptMinTrackSize.x = WINDOW_CLASS_DEFAULT_MINIMUM_WIDTH;
+			lpMinMaxInfo->ptMinTrackSize.y = WINDOW_CLASS_DEFAULT_MINIMUM_HEIGHT;
 
 			// Break out of switch
 			break;
@@ -368,10 +368,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow )
 			systemMenu.GetSystem( mainWindow );
 
 			// Add separator item to system menu
-			systemMenu.InsertSeparator( SYSTEM_MENU_SEPARATOR_ITEM_POSITION );
+			systemMenu.InsertSeparator( MENU_CLASS_SYSTEM_MENU_SEPARATOR_ITEM_POSITION );
 
 			// Add about item to system menu
-			systemMenu.InsertItem( SYSTEM_MENU_ABOUT_ITEM_POSITION, IDM_HELP_ABOUT, SYSTEM_MENU_ABOUT_ITEM_TEXT );
+			systemMenu.InsertItem( MENU_CLASS_SYSTEM_MENU_ABOUT_ITEM_POSITION, IDM_HELP_ABOUT, MENU_CLASS_SYSTEM_MENU_ABOUT_ITEM_TEXT );
 
 			// Get argument list
 			if( argumentList.Get() )
